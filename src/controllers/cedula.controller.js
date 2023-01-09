@@ -23,9 +23,9 @@ export const crearCedula = async (req, res) => {
     genero,
     fechaNacimiento,
   });
-  if (discapacitado) nuevaCedula.discapacitado = discapacitado;
-  if (terceraEdad) nuevaCedula.terceraEdad = terceraEdad;
-  if (militar) nuevaCedula.militar = militar;
+  if ("discapacitado" in req.body) nuevaCedula.discapacitado = discapacitado;
+  if ("terceraEdad" in req.body) nuevaCedula.terceraEdad = terceraEdad;
+  if ("militar" in req.body) nuevaCedula.militar = militar;
   const cedulaCreada = await nuevaCedula.save();
   return res.status(201).json(cedulaCreada);
 };

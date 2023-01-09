@@ -22,8 +22,8 @@ export const crearUsuario = async (req, res) => {
     padron: padronEncontrado._id,
   });
 
-  if (vocal) nuevoUsuario.vocal = vocal;
-  if (voto) nuevoUsuario.voto = voto;
+  if ("vocal" in req.body) nuevoUsuario.vocal = vocal;
+  if ("voto" in req.body) nuevoUsuario.voto = voto;
 
   const usuarioCreado = await nuevoUsuario.save();
   res.status(201).json(usuarioCreado);
@@ -32,4 +32,4 @@ export const crearUsuario = async (req, res) => {
 export const obtenerUsuarios = async (req, res) => {
   const usuarios = await Usuario.find();
   res.status(200).json(usuarios);
-}
+};

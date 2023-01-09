@@ -3,7 +3,7 @@ import Padron from "../models/Padron";
 
 export const crearJunta = async (req, res) => {
   const { numero, genero, padron } = req.body;
-  if (!numero || !genero || !padron) {
+  if (!numero || !('genero' in req.body) || !padron) {
     return res.status(400).json({
       message: "Datos enviados no validos",
     });
@@ -16,7 +16,7 @@ export const crearJunta = async (req, res) => {
   if (!padronEncontrado)
     return res.status(400).json({ message: "Padron no encontrado" });
   const juntaEncontrada = await Junta.findOne(
-    { ciudad, nombreLugar },
+    { numero, genero },
     { _id: 1 }
   ).lean();
   let yaExisteEnPadron = false;
