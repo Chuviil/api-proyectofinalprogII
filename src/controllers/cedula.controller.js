@@ -34,3 +34,11 @@ export const obtenerCedulas = async (req, res) => {
   const cedulas = await Cedula.find();
   return res.status(200).json(cedulas);
 };
+
+export const obtenerCedula = async (req, res) => {
+  const cedula = await Cedula.findOne({ id: req.params.id });
+  if (!cedula) {
+    return res.status(404).json({ message: "Cedula no encontrada" });
+  }
+  return res.status(200).json(cedula);
+};

@@ -7,4 +7,6 @@ router.get("/", cedulaCtrl.obtenerCedulas);
 
 router.post("/", cedulaCtrl.crearCedula);
 
+router.get("/:id", cedulaCtrl.obtenerCedula);
+
 export default router;

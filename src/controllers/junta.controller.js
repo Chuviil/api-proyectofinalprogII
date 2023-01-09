@@ -4,11 +4,11 @@ import Padron from "../models/Padron";
 export const obtenerJuntas = async (req, res) => {
   const juntas = await Junta.find();
   return res.status(200).json(juntas);
-}
+};
 
 export const crearJunta = async (req, res) => {
   const { numero, genero, padron } = req.body;
-  if (!numero || !('genero' in req.body) || !padron) {
+  if (!numero || !("genero" in req.body) || !padron) {
     return res.status(400).json({
       message: "Datos enviados no validos",
     });
@@ -45,4 +45,14 @@ export const crearJunta = async (req, res) => {
     },
   });
   return res.status(201).json(juntaCreada);
+};
+
+export const obtenerJuntaPorNumero = async (req, res) => {
+  if (isNaN(req.params.numero)) {
+    return res.status(400).json({
+      message: "El parametro despues del / debe ser un número",
+    });
+  }
+  const juntasEncontradas = await Junta.find({ numero: req.params.numero });
+  return res.status(200).json(juntasEncontradas);
 };

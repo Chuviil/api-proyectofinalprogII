@@ -7,4 +7,6 @@ router.get("/", juntaCtrl.obtenerJuntas);
 
 router.post("/", juntaCtrl.crearJunta);
 
+router.get("/:numero", juntaCtrl.obtenerJuntaPorNumero);
+
 export default router;
