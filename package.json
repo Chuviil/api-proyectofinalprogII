@@ -1,0 +1,26 @@
+{
+  "name": "proyectofinalapi",
+  "version": "1.0.0",
+  "description": "API para el proyecto final de programacion II",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "dev": "nodemon src/index.js --exec babel-node",
+    "start": "node dist/index.js"
+  },
+  "author": "Chuvblocks",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "nodemon": "^2.0.20"
+  }
+}
