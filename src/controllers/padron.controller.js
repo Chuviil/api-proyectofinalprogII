@@ -1,5 +1,10 @@
 import Padron from "../models/Padron";
 
+export const obtenerPadrones = async (req, res) => {
+  const padrones = await Padron.find();
+  return res.status(200).json(padrones);
+}
+
 export const crearPadron = async (req, res) => {
   const { canton, parroquia, provincia, ciudad, juntas, nombreLugar } =
     req.body;

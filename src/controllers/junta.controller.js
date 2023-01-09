@@ -1,6 +1,11 @@
 import Junta from "../models/Junta";
 import Padron from "../models/Padron";
 
+export const obtenerJuntas = async (req, res) => {
+  const juntas = await Junta.find();
+  return res.status(200).json(juntas);
+}
+
 export const crearJunta = async (req, res) => {
   const { numero, genero, padron } = req.body;
   if (!numero || !('genero' in req.body) || !padron) {
