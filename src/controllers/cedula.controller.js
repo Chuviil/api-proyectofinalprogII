@@ -10,12 +10,12 @@ export const crearCedula = async (req, res) => {
     terceraEdad,
     militar,
   } = req.body;
-  if (!id || !nombre || !genero || !fechaNacimiento) {
-    return res.status(400).json({message: "Datos enviados no validos"});
+  if (!id || !nombre || !("genero" in req.body) || !fechaNacimiento) {
+    return res.status(400).json({ message: "Datos enviados no validos" });
   }
-  const cedulaEncontrada = await Cedula.findOne({id});
+  const cedulaEncontrada = await Cedula.findOne({ id });
   if (cedulaEncontrada) {
-    return res.status(400).json({message: "Esta cedula ya esta registrada"});
+    return res.status(400).json({ message: "Esta cedula ya esta registrada" });
   }
   const nuevaCedula = new Cedula({
     id,
@@ -33,4 +33,4 @@ export const crearCedula = async (req, res) => {
 export const obtenerCedulas = async (req, res) => {
   const cedulas = await Cedula.find();
   return res.status(200).json(cedulas);
-}
+};
