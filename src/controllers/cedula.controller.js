@@ -1,4 +1,5 @@
 import Cedula from "../models/Cedula";
+import validator from "validator";
 
 export const crearCedula = async (req, res) => {
   const {
@@ -10,7 +11,16 @@ export const crearCedula = async (req, res) => {
     terceraEdad,
     militar,
   } = req.body;
-  if (!id || !nombre || !("genero" in req.body) || !fechaNacimiento) {
+  if (
+    !id ||
+    !nombre ||
+    !("genero" in req.body) ||
+    !fechaNacimiento ||
+    isNaN(id) ||
+    !validator.isBoolean(genero + "") ||
+    !validator.isDate(fechaNacimiento+"") ||
+    !validator.isAlpha(nombre+"", "es-ES", {ignore: " "})
+  ) {
     return res.status(400).json({ message: "Datos enviados no validos" });
   }
   const cedulaEncontrada = await Cedula.findOne({ id });
@@ -23,9 +33,12 @@ export const crearCedula = async (req, res) => {
     genero,
     fechaNacimiento,
   });
-  if ("discapacitado" in req.body) nuevaCedula.discapacitado = discapacitado;
-  if ("terceraEdad" in req.body) nuevaCedula.terceraEdad = terceraEdad;
-  if ("militar" in req.body) nuevaCedula.militar = militar;
+  if ("discapacitado" in req.body && validator.isBoolean(discapacitado+""))
+    nuevaCedula.discapacitado = discapacitado;
+  if ("terceraEdad" in req.body && validator.isBoolean(terceraEdad+""))
+    nuevaCedula.terceraEdad = terceraEdad;
+  if ("militar" in req.body && validator.isBoolean(militar+""))
+    nuevaCedula.militar = militar;
   const cedulaCreada = await nuevaCedula.save();
   return res.status(201).json(cedulaCreada);
 };
