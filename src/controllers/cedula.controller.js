@@ -18,8 +18,8 @@ export const crearCedula = async (req, res) => {
     !fechaNacimiento ||
     isNaN(id) ||
     !validator.isBoolean(genero + "") ||
-    !validator.isDate(fechaNacimiento+"") ||
-    !validator.isAlpha(nombre+"", "es-ES", {ignore: " "})
+    !validator.isDate(fechaNacimiento + "") ||
+    !validator.isAlpha(nombre + "", "es-ES", { ignore: " " })
   ) {
     return res.status(400).json({ message: "Datos enviados no validos" });
   }
@@ -33,23 +33,31 @@ export const crearCedula = async (req, res) => {
     genero,
     fechaNacimiento,
   });
-  if ("discapacitado" in req.body && validator.isBoolean(discapacitado+""))
+  if ("discapacitado" in req.body && validator.isBoolean(discapacitado + ""))
     nuevaCedula.discapacitado = discapacitado;
-  if ("terceraEdad" in req.body && validator.isBoolean(terceraEdad+""))
+  if ("terceraEdad" in req.body && validator.isBoolean(terceraEdad + ""))
     nuevaCedula.terceraEdad = terceraEdad;
-  if ("militar" in req.body && validator.isBoolean(militar+""))
+  if ("militar" in req.body && validator.isBoolean(militar + ""))
     nuevaCedula.militar = militar;
   const cedulaCreada = await nuevaCedula.save();
   return res.status(201).json(cedulaCreada);
 };
 
 export const obtenerCedulas = async (req, res) => {
-  const cedulas = await Cedula.find();
+  const cedulas = await Cedula.find({}, { createdAt: 0, updatedAt: 0 });
   return res.status(200).json(cedulas);
 };
 
 export const obtenerCedula = async (req, res) => {
-  const cedula = await Cedula.findOne({ id: req.params.id });
+  if (isNaN(req.params.id)) {
+    return res
+      .status(400)
+      .json({ message: "El parametro de busqueda tiene que ser un numero" });
+  }
+  const cedula = await Cedula.findOne(
+    { id: req.params.id },
+    { createdAt: 0, updatedAt: 0 }
+  );
   if (!cedula) {
     return res.status(404).json({ message: "Cedula no encontrada" });
   }
