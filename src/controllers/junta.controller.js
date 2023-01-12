@@ -1,5 +1,6 @@
 import Junta from "../models/Junta";
 import Padron from "../models/Padron";
+import validator from "validator";
 
 export const obtenerJuntas = async (req, res) => {
   const juntas = await Junta.find();
@@ -8,7 +9,13 @@ export const obtenerJuntas = async (req, res) => {
 
 export const crearJunta = async (req, res) => {
   const { numero, genero, padron } = req.body;
-  if (!numero || !("genero" in req.body) || !padron) {
+  if (
+    !numero ||
+    !("genero" in req.body) ||
+    !padron ||
+    isNaN(numero) ||
+    !validator.isBoolean(genero+"")
+  ) {
     return res.status(400).json({
       message: "Datos enviados no validos",
     });

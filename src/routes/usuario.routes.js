@@ -8,4 +8,6 @@ router.get("/", usuarioCtrl.obtenerUsuarios);
 
 router.post("/", usuarioCtrl.crearUsuario);
 
+router.get("/:id", usuarioCtrl.obtenerUsuario)
+
 export default router;

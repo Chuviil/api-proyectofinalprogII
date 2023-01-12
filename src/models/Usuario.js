@@ -6,6 +6,7 @@ const schema = new Schema(
       ref: "Cedula",
       type: Schema.Types.ObjectId,
       required: true,
+      unique: true,
     },
     voto: {
       type: Boolean,
@@ -20,6 +21,10 @@ const schema = new Schema(
     padron: {
       ref: "Padron",
       type: Schema.Types.ObjectId,
+      required: true,
+    },
+    junta: {
+      type: Number,
       required: true,
     },
   },
