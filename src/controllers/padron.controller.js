@@ -1,5 +1,4 @@
 import Padron from "../models/Padron";
-// import validator from "validator";
 
 export const obtenerPadrones = async (req, res) => {
   const padrones = await Padron.find();
@@ -14,12 +13,6 @@ export const crearPadron = async (req, res) => {
     !ciudad ||
     !provincia ||
     !nombreLugar
-    //||
-    // !validator.isAlpha(canton + "", "es-ES", { ignore: " " }) ||
-    // !validator.isAlpha(parroquia + "", "es-ES", { ignore: " " }) ||
-    // !validator.isAlpha(ciudad + "", "es-ES", { ignore: " " }) ||
-    // !validator.isAlpha(provincia + "", "es-ES", { ignore: " " }) ||
-    // !validator.isAlphanumeric(nombreLugar + "", "es-ES", { ignore: " " })
   ) {
     return res.status(400).json({
       message: "Datos enviados no validos",
