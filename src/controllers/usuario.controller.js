@@ -36,7 +36,12 @@ export const crearUsuario = async (req, res) => {
 };
 
 export const obtenerUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find();
+  const usuarios = await Usuario.find({}, { createdAt: 0, updatedAt: 0 })
+    .populate({
+      path: "cedula",
+      select: "-createdAt -updatedAt",
+    })
+    .populate({ path: "padron", select: "-createdAt -updatedAt" });
   res.status(200).json(usuarios);
 };
 
@@ -58,7 +63,7 @@ export const obtenerUsuario = async (req, res) => {
     .populate({ path: "cedula", select: "-createdAt -updatedAt" })
     .populate({
       path: "padron",
-      select: "-createdAt -updatedAt"
+      select: "-createdAt -updatedAt",
     });
   if (!usuarioEncontrado) {
     return res.status(404).json({ message: "Usuario no encontrado" });
