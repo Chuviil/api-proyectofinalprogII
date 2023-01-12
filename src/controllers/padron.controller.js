@@ -1,7 +1,7 @@
 import Padron from "../models/Padron";
 
 export const obtenerPadrones = async (req, res) => {
-  const padrones = await Padron.find();
+  const padrones = await Padron.find().populate('juntas');
   return res.status(200).json(padrones);
 };
 
