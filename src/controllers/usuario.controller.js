@@ -4,7 +4,7 @@ import Padron from "../models/Padron";
 import validator from "validator";
 
 export const crearUsuario = async (req, res) => {
-  const { cedula, voto, vocal, padron, junta } = req.body;
+  const { cedula, vocal, padron, junta } = req.body;
   if (!cedula || !padron || !junta || isNaN(cedula) || isNaN(junta)) {
     return res.status(400).json({ message: "Datos enviados no validos" });
   }
@@ -30,7 +30,6 @@ export const crearUsuario = async (req, res) => {
   });
 
   if (validator.isBoolean(vocal + "")) nuevoUsuario.vocal = vocal;
-  if (validator.isBoolean(voto + "")) nuevoUsuario.voto = voto;
 
   const usuarioCreado = await nuevoUsuario.save();
   res.status(201).json(usuarioCreado);
