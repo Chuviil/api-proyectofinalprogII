@@ -53,6 +53,8 @@ export const obtenerUsuario = async (req, res) => {
       .json({ message: "El parametro de busqueda tiene que ser un numero" });
   }
   const cedulaEncontrada = await Cedula.findOne({ id }, { _id: 1 }).lean();
+  if (!cedulaEncontrada)
+    return res.status(400).json({ message: "Cedula no encontrada" });
   const usuarioEncontrado = await Usuario.findOne(
     { cedula: cedulaEncontrada._id.toString() },
     {
