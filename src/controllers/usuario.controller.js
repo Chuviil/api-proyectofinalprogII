@@ -1,74 +1,73 @@
 import Usuario from "../models/Usuario";
-import Cedula from "../models/Cedula";
-import Padron from "../models/Padron";
 import validator from "validator";
 
 export const crearUsuario = async (req, res) => {
-  const { cedula, vocal, padron, junta } = req.body;
-  if (!cedula || !padron || !junta || isNaN(cedula) || isNaN(junta)) {
+  const {
+    nombres,
+    apellidos,
+    cedula,
+    fechaNacimiento,
+    genero,
+    voto,
+    contrasenia,
+  } = req.body;
+  if (
+    !nombres ||
+    !apellidos ||
+    !validator.isDate(fechaNacimiento + "") ||
+    !validator.isBoolean(genero + "") ||
+    isNaN(cedula) ||
+    !validator.isAlphanumeric(contrasenia + "")
+  ) {
     return res.status(400).json({ message: "Datos enviados no validos" });
   }
-  const cedulaEncontrada = await Cedula.findOne({ id: cedula }).lean();
-  if (!cedulaEncontrada) {
-    return res.status(400).json({ message: "Cedula no encontrada" });
-  }
-  const usuarioEncontrado = await Usuario.findOne({
-    cedula: cedulaEncontrada._id,
-  }).lean();
+  const usuarioEncontrado = await Usuario.findOne({ cedula }).lean();
   if (usuarioEncontrado)
-    return res.status(400).json({ message: "Este usuario ya esta registrado" });
-  const { ciudad, nombreLugar } = padron;
-  const padronEncontrado = await Padron.findOne({ ciudad, nombreLugar }).lean();
-  if (!padronEncontrado) {
-    return res.status(400).json({ message: "Padron no encontrado" });
-  }
-
-  const nuevoUsuario = new Usuario({
-    cedula: cedulaEncontrada._id,
-    padron: padronEncontrado._id,
-    junta,
+    return res
+      .status(400)
+      .json({ message: "Un usuario con esta cedula ya esta registrado" });
+  const nuevaPersona = new Usuario({
+    nombres,
+    apellidos,
+    cedula,
+    fechaNacimiento,
+    genero,
+    contrasenia,
   });
 
-  if (validator.isBoolean(vocal + "")) nuevoUsuario.vocal = vocal;
+  if (validator.isBoolean(voto + "")) nuevaPersona.voto = voto;
 
-  const usuarioCreado = await nuevoUsuario.save();
+  const usuarioCreado = await nuevaPersona.save();
   res.status(201).json(usuarioCreado);
 };
 
 export const obtenerUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find({}, { createdAt: 0, updatedAt: 0 })
-    .populate({
-      path: "cedula",
-      select: "-createdAt -updatedAt",
-    })
-    .populate({ path: "padron", select: "-createdAt -updatedAt" });
-  res.status(200).json(usuarios);
+  const personas = await Usuario.find(
+    {},
+    { _id: 0, createdAt: 0, updatedAt: 0 }
+  );
+  res.status(200).json(personas);
 };
 
 export const obtenerUsuario = async (req, res) => {
-  const { id } = req.params;
-  if (isNaN(id)) {
+  const { cedula } = req.params;
+  const { contrasenia } = req.body;
+  console.log(contrasenia);
+  if (isNaN(cedula)) {
     return res
       .status(400)
       .json({ message: "El parametro de busqueda tiene que ser un numero" });
   }
-  const cedulaEncontrada = await Cedula.findOne({ id }, { _id: 1 }).lean();
-  if (!cedulaEncontrada)
-    return res.status(400).json({ message: "Cedula no encontrada" });
-  const usuarioEncontrado = await Usuario.findOne(
-    { cedula: cedulaEncontrada._id.toString() },
-    {
-      createdAt: 0,
-      updatedAt: 0,
-    }
-  )
-    .populate({ path: "cedula", select: "-createdAt -updatedAt" })
-    .populate({
-      path: "padron",
-      select: "-createdAt -updatedAt",
-    });
-  if (!usuarioEncontrado) {
-    return res.status(404).json({ message: "Usuario no encontrado" });
+  const personaEncontrada = await Usuario.findOne(
+    { cedula },
+    { _id: 0, createdAt: 0, updatedAt: 0 }
+  ).lean();
+  if (!personaEncontrada)
+    return res
+      .status(400)
+      .json({ message: "Persona con esta cedula no encontrada" });
+  if (contrasenia === personaEncontrada.contrasenia) {
+    return res.status(200).json(personaEncontrada);
   }
-  return res.status(200).json(usuarioEncontrado);
+  return res.status(400).json({ message: "Contraseña incorrecta" });
 };

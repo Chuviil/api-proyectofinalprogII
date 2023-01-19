@@ -8,6 +8,6 @@ router.get("/", usuarioCtrl.obtenerUsuarios);
 
 router.post("/", usuarioCtrl.crearUsuario);
 
-router.get("/:id", usuarioCtrl.obtenerUsuario)
+router.get("/:cedula", usuarioCtrl.obtenerUsuario)
 
 export default router;
