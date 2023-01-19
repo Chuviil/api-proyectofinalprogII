@@ -51,8 +51,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuario = async (req, res) => {
   const { cedula } = req.params;
-  const { contrasenia } = req.body;
-  console.log(contrasenia);
+  const { contrasenia } = req.query;
   if (isNaN(cedula)) {
     return res
       .status(400)
