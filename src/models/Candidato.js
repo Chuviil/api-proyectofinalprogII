@@ -1,14 +1,17 @@
-import { model, Schema } from "mongoose";
+import { Schema } from "mongoose";
+import Persona from "./Persona";
 
-const schema = new Schema(
-  {
-    dignidad: String,
-    votos: {
-      type: Number,
-      default: 0,
-    },
+const candidatoSchema = new Schema({
+  dignidad: {
+    type: String,
+    enum: ["ALCALDE", "PREFECTO", "CONCEJAL"],
+    required: true,
   },
-  { timestamps: true, versionKey: false }
-);
+  votos: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+});
 
-export default model("Candidato", schema);
+export default Persona.discriminator("Candidato", candidatoSchema);

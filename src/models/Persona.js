@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const schema = new Schema(
+const personaSchema = new Schema(
   {
     nombres: [
       {
@@ -14,31 +14,25 @@ const schema = new Schema(
         required: true,
       },
     ],
-    cedula: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-    candidato: {
-      ref: "Candidato",
-      type: Schema.Types.ObjectId,
-      default: null,
-    },
     fechaNacimiento: {
       type: Date,
       required: true,
     },
-    genero: {
-      type: Boolean,
-      required: true,
-    },
-    voto: {
-      type: Boolean,
-      default: false,
+    cedula: {
+      type: Number,
       required: true,
     },
     contrasenia: {
       type: String,
+      required: true,
+    },
+    parroquia: {
+      type: String,
+      required: true,
+    },
+    genero: {
+      type: String,
+      enum: ["MASCULINO", "FEMENINO"],
       required: true,
     },
   },
@@ -48,4 +42,4 @@ const schema = new Schema(
   }
 );
 
-export default model("Usuario", schema);
+export default model("Persona", personaSchema);
