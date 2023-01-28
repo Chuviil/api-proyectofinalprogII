@@ -26,6 +26,10 @@ export const crearPersona = async (req, res) => {
   // }
   const personaEncontrada = await Persona.findOne({ cedula }).lean();
 
+  if (personaEncontrada) {
+    return res.status(400).json({ message: "Esta cedula ya esta registrada" });
+  }
+
   if (dignidad) {
     await Candidato.create(
       {
@@ -64,43 +68,31 @@ export const crearPersona = async (req, res) => {
       return res.status(201).json({ nuevoVotante });
     }
   );
-
-  if (personaEncontrada) {
-    return res.status(400).json({ message: "Esta cedula ya esta registrada" });
-  }
-
-  const usuarioCreado = await nuevaPersona.save();
-  res.status(201).json(usuarioCreado);
 };
 
-/*
-
-export const obtenerUsuarios = async (req, res) => {
-  const personas = await Usuario.find(
-    {},
-    { _id: 0, createdAt: 0, updatedAt: 0 }
-  );
+export const obtenerPersonas = async (req, res) => {
+  const personas = await Persona.find({}, { _id: 0, __v: 0 });
   res.status(200).json(personas);
 };
 
-export const obtenerUsuario = async (req, res) => {
+export const obtenerPersona = async (req, res) => {
   const { cedula } = req.params;
   const { contrasenia } = req.query;
-  if (isNaN(cedula)) {
-    return res
-      .status(400)
-      .json({ message: "El parametro de busqueda tiene que ser un numero" });
-  }
-  const personaEncontrada = await Usuario.findOne(
+
+  const personaEncontrada = await Persona.findOne(
     { cedula },
-    { _id: 0, createdAt: 0, updatedAt: 0 }
+    { _id: 0, __v: 0 }
   ).lean();
-  if (!personaEncontrada)
+
+  if (!personaEncontrada) {
     return res
       .status(400)
       .json({ message: "Persona con esta cedula no encontrada" });
+  }
+
   if (contrasenia === personaEncontrada.contrasenia) {
     return res.status(200).json(personaEncontrada);
   }
+
   return res.status(400).json({ message: "Contraseña incorrecta" });
-}; */
+};

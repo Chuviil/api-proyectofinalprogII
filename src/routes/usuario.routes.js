@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { crearPersona } from "../controllers/persona.controller";
+import {crearPersona, obtenerPersona, obtenerPersonas} from "../controllers/persona.controller";
 
 const router = Router();
 
-//router.get("/", usuarioCtrl.obtenerUsuarios);
+router.get("/", obtenerPersonas);
 
 router.post("/", crearPersona);
 
-//router.get("/:cedula", usuarioCtrl.obtenerUsuario);
+router.get("/:cedula", obtenerPersona);
 
 export default router;
