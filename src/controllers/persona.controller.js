@@ -69,6 +69,9 @@ export const obtenerPersona = async (req, res) => {
   const { cedula } = req.params;
   const { contrasenia } = req.query;
 
+  if (cedula === undefined || cedula === null || cedula === "undefined")
+    return res.status(400).json({ message: "Cedula no valida" });
+
   const personaEncontrada = await Persona.findOne(
     { cedula },
     { _id: 0, __v: 0 }
