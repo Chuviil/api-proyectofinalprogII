@@ -20,6 +20,7 @@ const personaSchema = new Schema({
   cedula: {
     type: Number,
     required: true,
+    unique: true,
   },
   contrasenia: {
     type: String,

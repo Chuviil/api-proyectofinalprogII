@@ -13,18 +13,8 @@ export const crearPersona = async (req, res) => {
     genero,
     dignidad,
   } = req.body;
-  // if (
-  //   !nombres ||
-  //   !apellidos ||
-  //   !validator.isDate(fechaNacimiento + "") ||
-  //   isNaN(cedula) ||
-  //   !validator.isAlphanumeric(contrasenia + "") ||
-  //   !parroquia ||
-  //   !genero
-  // ) {
-  //   return res.status(400).json({ message: "Datos enviados no validos" });
-  // }
-  const personaEncontrada = await Persona.findOne({ cedula }).lean();
+
+  const personaEncontrada = await Persona.findOne({ cedula });
 
   if (personaEncontrada) {
     return res.status(400).json({ message: "Esta cedula ya esta registrada" });
@@ -49,25 +39,25 @@ export const crearPersona = async (req, res) => {
         return res.status(201).json({ nuevoCandidato });
       }
     );
-  }
-
-  await Votante.create(
-    {
-      nombres,
-      apellidos,
-      fechaNacimiento,
-      cedula,
-      contrasenia,
-      parroquia,
-      genero,
-    },
-    (error, nuevoVotante) => {
-      if (error) {
-        return res.status(400).json({ message: error.message });
+  } else {
+    await Votante.create(
+      {
+        nombres,
+        apellidos,
+        fechaNacimiento,
+        cedula,
+        contrasenia,
+        parroquia,
+        genero,
+      },
+      (error, nuevoVotante) => {
+        if (error) {
+          return res.status(400).json({ message: error.message });
+        }
+        return res.status(201).json({ nuevoVotante });
       }
-      return res.status(201).json({ nuevoVotante });
-    }
-  );
+    );
+  }
 };
 
 export const obtenerPersonas = async (req, res) => {

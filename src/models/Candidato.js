@@ -7,10 +7,10 @@ const candidatoSchema = new Schema({
     enum: ["ALCALDE", "PREFECTO", "CONCEJAL"],
     required: true,
   },
-  votos: {
-    type: Number,
-    default: 0,
-    required: true,
+  lista: {
+    ref: "Lista",
+    type: Schema.Types.ObjectId,
+    default: null,
   },
 });
 
