@@ -15,6 +15,7 @@ export const crearPersona = async (req, res) => {
     dignidad,
   } = req.body;
 
+
   const personaEncontrada = await Persona.findOne({ cedula });
 
   if (personaEncontrada) {
@@ -34,7 +35,7 @@ export const crearPersona = async (req, res) => {
         fechaNacimiento,
         cedula,
         contrasenia,
-        parroquiaID,
+        parroquia: parroquiaID,
         genero,
         dignidad,
       },
@@ -53,7 +54,7 @@ export const crearPersona = async (req, res) => {
         fechaNacimiento,
         cedula,
         contrasenia,
-        parroquiaID,
+        parroquia: parroquiaID,
         genero,
       },
       (error, nuevoVotante) => {
