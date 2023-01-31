@@ -27,7 +27,8 @@ const personaSchema = new Schema({
     required: true,
   },
   parroquia: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Parroquia",
     required: true,
   },
   genero: {

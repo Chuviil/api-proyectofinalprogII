@@ -1,6 +1,7 @@
 import Persona from "../models/Persona";
 import Candidato from "../models/Candidato";
 import Votante from "../models/Votante";
+import Parroquia from "../models/Parroquia";
 
 export const crearPersona = async (req, res) => {
   const {
@@ -20,6 +21,11 @@ export const crearPersona = async (req, res) => {
     return res.status(400).json({ message: "Esta cedula ya esta registrada" });
   }
 
+  const parroquiaEncontrada = await Parroquia.findOne({
+    nombre: parroquia,
+  }).lean();
+  const parroquiaID = parroquiaEncontrada._id;
+
   if (dignidad) {
     await Candidato.create(
       {
@@ -28,7 +34,7 @@ export const crearPersona = async (req, res) => {
         fechaNacimiento,
         cedula,
         contrasenia,
-        parroquia,
+        parroquiaID,
         genero,
         dignidad,
       },
@@ -47,7 +53,7 @@ export const crearPersona = async (req, res) => {
         fechaNacimiento,
         cedula,
         contrasenia,
-        parroquia,
+        parroquiaID,
         genero,
       },
       (error, nuevoVotante) => {

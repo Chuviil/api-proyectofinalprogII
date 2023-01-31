@@ -4,7 +4,8 @@ const parroquiaSchema = new Schema({
   nombre: {
     type: String,
     required: true,
-    enum: [""],
+    enum: ["NANEGAL"],
+    unique: true,
   },
   votantes: [
     {
