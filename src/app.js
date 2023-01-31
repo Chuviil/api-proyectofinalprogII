@@ -6,6 +6,7 @@ import { iniciarEleccion } from "./libs/initialSetup";
 import votoElectronicoRoutes from "./routes/votoElectronico.routes";
 import eleccionRoutes from "./routes/eleccion.routes";
 import parroquiaRoutes from "./routes/parroquia.routes";
+import zonaMetropolitanaRoutes from "./routes/zonaMetropolitana.routes";
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use("/api/listas", listaRoutes);
 app.use("/api/elecciones", eleccionRoutes);
 
 app.use("/api/parroquias", parroquiaRoutes);
+
+app.use("/api/zonasMetropolitanas", zonaMetropolitanaRoutes);
 
 app.use("/api/votosElectronicos", votoElectronicoRoutes);
 
