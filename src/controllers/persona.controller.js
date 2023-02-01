@@ -101,7 +101,9 @@ export const agregarDignidadCandidato = async (req, res) => {
   const { cedula } = req.params;
   const { numero } = req.query;
 
-  const { dignidad, _id } = await Candidato.findOne({ cedula }).lean;
+  console.log(`Cedula: ${cedula} NumeroLista: ${numero}`)
+
+  const { dignidad, _id } = await Candidato.findOne({ cedula }).lean();
 
   switch (dignidad) {
     case "ALCALDE":
@@ -123,4 +125,6 @@ export const agregarDignidadCandidato = async (req, res) => {
         .status(200)
         .json({ message: `Concejal agregado a la lista ${numero}` });
   }
+
+  return res.status(400).json({ message: "Ocurrio un error actualizando la lista"})
 };
