@@ -27,6 +27,8 @@ export const crearPersona = async (req, res) => {
   }).lean();
   const parroquiaID = parroquiaEncontrada._id;
 
+  if (cedula < 0) return res.status(404).json({message: "No"})
+
   if (dignidad) {
     await Candidato.create(
       {
