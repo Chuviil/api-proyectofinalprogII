@@ -2,6 +2,7 @@ import Persona from "../models/Persona";
 import Candidato from "../models/Candidato";
 import Votante from "../models/Votante";
 import Parroquia from "../models/Parroquia";
+import Lista from "../models/Lista";
 
 export const crearPersona = async (req, res) => {
   const {
@@ -14,7 +15,6 @@ export const crearPersona = async (req, res) => {
     genero,
     dignidad,
   } = req.body;
-
 
   const personaEncontrada = await Persona.findOne({ cedula });
 
@@ -95,4 +95,32 @@ export const obtenerPersona = async (req, res) => {
   }
 
   return res.status(400).json({ message: "Contraseña incorrecta" });
+};
+
+export const agregarDignidadCandidato = async (req, res) => {
+  const { cedula } = req.params;
+  const { numero } = req.query;
+
+  const { dignidad, _id } = await Candidato.findOne({ cedula }).lean;
+
+  switch (dignidad) {
+    case "ALCALDE":
+      await Lista.findOneAndUpdate({ numero }, { candidatoAlcalde: _id });
+      return res
+        .status(200)
+        .json({ message: `Alcalde en lista ${numero} modificado` });
+    case "PREFECTO":
+      await Lista.findOneAndUpdate({ numero }, { candidatoPrefecto: _id });
+      return res
+        .status(200)
+        .json({ message: `Prefecto en lista ${numero} modificado` });
+    case "CONCEJAL":
+      await Lista.findOneAndUpdate(
+        { numero },
+        { $push: { candidatoAlcalde: _id } }
+      );
+      return res
+        .status(200)
+        .json({ message: `Concejal agregado a la lista ${numero}` });
+  }
 };

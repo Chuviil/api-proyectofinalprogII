@@ -4,14 +4,17 @@ const votoElectronicoSchema = new Schema({
   candidatoAlcalde: {
     ref: "Candidato",
     type: Schema.Types.ObjectId,
+    default: null
   },
   candidatoPrefecto: {
     ref: "Candidato",
     type: Schema.Types.ObjectId,
+    default: null
   },
   listaConsejales: {
     ref: "Lista",
     type: Schema.Types.ObjectId,
+    default: null
   },
   fechaVotacion: Date,
   parroquia: {
