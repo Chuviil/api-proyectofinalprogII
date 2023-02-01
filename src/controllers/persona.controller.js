@@ -39,11 +39,14 @@ export const crearPersona = async (req, res) => {
         genero,
         dignidad,
       },
-      (error, nuevoCandidato) => {
+      async (error, nuevoCandidato) => {
         if (error) {
-          return res.status(400).json({ message: error.message });
+          return res.status(400).json({message: error.message});
         }
-        return res.status(201).json({ nuevoCandidato });
+        await Parroquia.findByIdAndUpdate(parroquiaID, {
+          $push: {votantes: nuevoCandidato._id},
+        });
+        return res.status(201).json({nuevoCandidato});
       }
     );
   } else {
@@ -57,11 +60,14 @@ export const crearPersona = async (req, res) => {
         parroquia: parroquiaID,
         genero,
       },
-      (error, nuevoVotante) => {
+      async (error, nuevoVotante) => {
         if (error) {
-          return res.status(400).json({ message: error.message });
+          return res.status(400).json({message: error.message});
         }
-        return res.status(201).json({ nuevoVotante });
+        await Parroquia.findByIdAndUpdate(parroquiaID, {
+          $push: {votantes: nuevoCandidato._id},
+        });
+        return res.status(201).json({nuevoVotante});
       }
     );
   }

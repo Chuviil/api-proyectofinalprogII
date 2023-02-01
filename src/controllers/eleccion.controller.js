@@ -22,7 +22,24 @@ export const establecerFechaInicio = async (req, res) => {
 };
 
 export const obtenerEleccion = async (req, res) => {
-  const eleccion = await Eleccion.findOne({}, { __v: 0, _id: 0 });
+  const eleccion = await Eleccion.findOne({}, { __v: 0, _id: 0 }).populate({
+    path: "votosElectronicos",
+    model: "VotoElectronico",
+    populate: [
+      {
+        path: "candidatoAlcalde",
+      },
+      {
+        path: "candidatoPrefecto",
+      },
+      {
+        path: "listaConsejales",
+      },
+      {
+        path: "parroquia",
+      },
+    ],
+  });
 
   return res.status(200).json(eleccion);
 };
