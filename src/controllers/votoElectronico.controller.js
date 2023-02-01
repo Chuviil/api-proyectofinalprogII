@@ -21,7 +21,7 @@ export const agregarVotoElectronico = async (req, res) => {
     const candidatoAlcaldet = await Candidato.findOne({
       cedula: candidatoAlcalde,
     }).lean();
-    candidatoAlcaldeID = candidatoAlcaldet._id;
+    candidatoAlcaldeID = candidatoAlcaldet?._id;
     console.log(`Candidato no es nulo y su id es : ${candidatoAlcaldeID}`)
   }
 
@@ -29,7 +29,7 @@ export const agregarVotoElectronico = async (req, res) => {
     const candidatoPrefectoT = await Candidato.findOne({
       cedula: candidatoPrefecto,
     }).lean();
-    candidatoPrefectoID = candidatoPrefectoT._id;
+    candidatoPrefectoID = candidatoPrefectoT?._id;
     console.log(`Prefecto no es nulo y su id es : ${candidatoPrefectoID}`)
   }
 
@@ -37,7 +37,7 @@ export const agregarVotoElectronico = async (req, res) => {
     const candidatoAlcaldeT = await Lista.findOne({
       numero: listaConsejales,
     }).lean();
-    listaConsejalesID = candidatoAlcaldeT._id;
+    listaConsejalesID = candidatoAlcaldeT?._id;
   }
 
   await VotoElectronico.create(
