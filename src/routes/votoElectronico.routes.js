@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { agregarVotoElectronico } from "../controllers/votoElectronico.controller";
+import {agregarVotoElectronico, modificarEstadoVotacion} from "../controllers/votoElectronico.controller";
 
 const router = Router();
 
