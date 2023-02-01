@@ -16,6 +16,12 @@ export const crearLista = async (req, res) => {
 };
 
 export const obtenerListas = async (req, res) => {
-  const listas = await Lista.find({}, { __id: 0, __v: 0 });
+  const listas = await Lista.find(
+    {},
+    {
+      __id: 0,
+      __v: 0,
+    }
+  ).populate(["candidatoAlcalde", "candidatoPrefecto", "candidatosConsejal"]);
   return res.status(200).json(listas);
 };
