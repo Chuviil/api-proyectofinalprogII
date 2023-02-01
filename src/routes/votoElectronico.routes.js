@@ -5,4 +5,6 @@ const router = Router();
 
 router.post("/", agregarVotoElectronico);
 
+router.post("/:cedula", modificarEstadoVotacion);
+
 export default router;
