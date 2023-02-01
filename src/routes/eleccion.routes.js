@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { establecerFechaInicio } from "../controllers/eleccion.controller";
+import {
+  establecerFechaInicio,
+  obtenerEleccion,
+} from "../controllers/eleccion.controller";
 
 const router = Router();
 
 router.patch("/fecha", establecerFechaInicio);
 
-// router.get("/", )
+router.get("/", obtenerEleccion);
 
 export default router;
