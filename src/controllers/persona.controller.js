@@ -101,30 +101,44 @@ export const agregarDignidadCandidato = async (req, res) => {
   const { cedula } = req.params;
   const { numero } = req.query;
 
-  console.log(`Cedula: ${cedula} NumeroLista: ${numero}`)
+  console.log(`Cedula: ${cedula} NumeroLista: ${numero}`);
 
   const { dignidad, _id } = await Candidato.findOne({ cedula }).lean();
 
   switch (dignidad) {
     case "ALCALDE":
-      await Lista.findOneAndUpdate({ numero }, { candidatoAlcalde: _id });
+      const nuevaListaA = await Lista.findOneAndUpdate(
+        { numero },
+        { candidatoAlcalde: _id },
+        { new: true }
+      );
+      await Candidato.findOneAndUpdate({ cedula }, { lista: nuevaListaA._id });
       return res
         .status(200)
         .json({ message: `Alcalde en lista ${numero} modificado` });
     case "PREFECTO":
-      await Lista.findOneAndUpdate({ numero }, { candidatoPrefecto: _id });
+      const nuevaListaP = await Lista.findOneAndUpdate(
+        { numero },
+        { candidatoPrefecto: _id },
+        { new: true }
+      );
+      await Candidato.findOneAndUpdate({ cedula }, { lista: nuevaListaP._id });
       return res
         .status(200)
         .json({ message: `Prefecto en lista ${numero} modificado` });
     case "CONCEJAL":
-      await Lista.findOneAndUpdate(
+      const nuevaListaC = await Lista.findOneAndUpdate(
         { numero },
-        { $push: { candidatoAlcalde: _id } }
+        { $push: { candidatoAlcalde: _id } },
+        { new: true }
       );
+      await Candidato.findOneAndUpdate({ cedula }, { lista: nuevaListaC._id });
       return res
         .status(200)
         .json({ message: `Concejal agregado a la lista ${numero}` });
   }
 
-  return res.status(400).json({ message: "Ocurrio un error actualizando la lista"})
+  return res
+    .status(400)
+    .json({ message: "Ocurrio un error actualizando la lista" });
 };
