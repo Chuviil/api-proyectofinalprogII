@@ -20,3 +20,9 @@ export const establecerFechaInicio = async (req, res) => {
       .json({ message: "Eleccion actualizada", nuevaEleccion });
   }
 };
+
+export const obtenerEleccion = async (req, res) => {
+  const eleccion = await Eleccion.findOne({}, { __v: 0, _id: 0 });
+
+  return res.status(200).json(eleccion);
+};
