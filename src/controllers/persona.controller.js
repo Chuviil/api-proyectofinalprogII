@@ -3,6 +3,7 @@ import Candidato from "../models/Candidato";
 import Votante from "../models/Votante";
 import Parroquia from "../models/Parroquia";
 import Lista from "../models/Lista";
+import validator from "validator";
 
 export const crearPersona = async (req, res) => {
   const {
@@ -27,7 +28,10 @@ export const crearPersona = async (req, res) => {
   }).lean();
   const parroquiaID = parroquiaEncontrada._id;
 
-  if (cedula < 0) return res.status(404).json({message: "No"})
+  if (cedula < 0) return res.status(404).json({message: "Cedula no valida"})
+
+  if (!validator.isAlpha(nombres.join(" "), "es-ES", {ignore: " "})) return res.status(404).json({message: "Nombre no valido"})
+  if (!validator.isAlpha(apellidos.join(" "), "es-ES", {ignore: " "})) return res.status(404).json({message: "Apellido no valido"})
 
   if (dignidad) {
     await Candidato.create(
