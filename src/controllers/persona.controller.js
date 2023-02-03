@@ -28,10 +28,17 @@ export const crearPersona = async (req, res) => {
   }).lean();
   const parroquiaID = parroquiaEncontrada._id;
 
-  if (cedula < 0) return res.status(404).json({message: "Cedula no valida"})
+  if (cedula.length !== 10)
+    return res.status(404).json({ message: "Cedula no valida" });
 
-  if (!validator.isAlpha(nombres.join(" "), "es-ES", {ignore: " "})) return res.status(404).json({message: "Nombre no valido"})
-  if (!validator.isAlpha(apellidos.join(" "), "es-ES", {ignore: " "})) return res.status(404).json({message: "Apellido no valido"})
+  if (new Date(fechaNacimiento) > new Date()) {
+    return res.status(400).json({ message: "La fecha de nacimiento no puede ser mayor a la actual" });
+  }
+
+  if (!validator.isAlpha(nombres.join(" "), "es-ES", { ignore: " " }))
+    return res.status(404).json({ message: "Nombre no valido" });
+  if (!validator.isAlpha(apellidos.join(" "), "es-ES", { ignore: " " }))
+    return res.status(404).json({ message: "Apellido no valido" });
 
   if (dignidad) {
     await Candidato.create(
@@ -47,12 +54,12 @@ export const crearPersona = async (req, res) => {
       },
       async (error, nuevoCandidato) => {
         if (error) {
-          return res.status(400).json({message: error.message});
+          return res.status(400).json({ message: error.message });
         }
         await Parroquia.findByIdAndUpdate(parroquiaID, {
-          $push: {votantes: nuevoCandidato._id},
+          $push: { votantes: nuevoCandidato._id },
         });
-        return res.status(201).json({nuevoCandidato});
+        return res.status(201).json({ nuevoCandidato });
       }
     );
   } else {
@@ -68,12 +75,12 @@ export const crearPersona = async (req, res) => {
       },
       async (error, nuevoVotante) => {
         if (error) {
-          return res.status(400).json({message: error.message});
+          return res.status(400).json({ message: error.message });
         }
         await Parroquia.findByIdAndUpdate(parroquiaID, {
-          $push: {votantes: nuevoCandidato._id},
+          $push: { votantes: nuevoCandidato._id },
         });
-        return res.status(201).json({nuevoVotante});
+        return res.status(201).json({ nuevoVotante });
       }
     );
   }
