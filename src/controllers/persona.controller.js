@@ -4,6 +4,7 @@ import Votante from "../models/Votante";
 import Parroquia from "../models/Parroquia";
 import Lista from "../models/Lista";
 import validator from "validator";
+import {re} from "@babel/core/lib/vendor/import-meta-resolve";
 
 export const crearPersona = async (req, res) => {
   const {
@@ -28,18 +29,6 @@ export const crearPersona = async (req, res) => {
   }).lean();
   const parroquiaID = parroquiaEncontrada._id;
 
-  if (cedula.length !== 10)
-    return res.status(404).json({ message: "Cedula no valida" });
-
-  if (new Date(fechaNacimiento) > new Date()) {
-    return res.status(400).json({ message: "La fecha de nacimiento no puede ser mayor a la actual" });
-  }
-
-  if (!validator.isAlpha(nombres.join(" "), "es-ES", { ignore: " " }))
-    return res.status(404).json({ message: "Nombre no valido" });
-  if (!validator.isAlpha(apellidos.join(" "), "es-ES", { ignore: " " }))
-    return res.status(404).json({ message: "Apellido no valido" });
-
   if (dignidad) {
     await Candidato.create(
       {
@@ -56,9 +45,6 @@ export const crearPersona = async (req, res) => {
         if (error) {
           return res.status(400).json({ message: error.message });
         }
-        await Parroquia.findByIdAndUpdate(parroquiaID, {
-          $push: { votantes: nuevoCandidato._id },
-        });
         return res.status(201).json({ nuevoCandidato });
       }
     );
@@ -78,7 +64,7 @@ export const crearPersona = async (req, res) => {
           return res.status(400).json({ message: error.message });
         }
         await Parroquia.findByIdAndUpdate(parroquiaID, {
-          $push: { votantes: nuevoCandidato._id },
+          $push: { votantes: nuevoVotante._id },
         });
         return res.status(201).json({ nuevoVotante });
       }
