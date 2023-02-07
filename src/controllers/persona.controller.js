@@ -84,7 +84,7 @@ export const obtenerPersona = async (req, res) => {
   const personaEncontrada = await Persona.findOne(
     { cedula },
     { _id: 0, __v: 0 }
-  ).lean();
+  ).populate("lista").lean();
 
   if (!personaEncontrada) {
     return res
