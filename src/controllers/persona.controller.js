@@ -131,7 +131,7 @@ export const agregarDignidadCandidato = async (req, res) => {
     case "CONCEJAL":
       const nuevaListaC = await Lista.findOneAndUpdate(
         { numero },
-        { $push: { candidatoConsejal: _id } },
+        { $push: { candidatosConsejal: _id } },
         { new: true }
       );
       await Candidato.findOneAndUpdate({ cedula }, { lista: nuevaListaC._id });
