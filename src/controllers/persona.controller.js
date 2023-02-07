@@ -84,7 +84,14 @@ export const obtenerPersona = async (req, res) => {
   const personaEncontrada = await Persona.findOne(
     { cedula },
     { _id: 0, __v: 0 }
-  ).populate("lista").lean();
+  ).populate({
+    path: 'lista',
+    populate: [
+      { path: 'candidatosConsejal' },
+      { path: 'candidatoAlcalde' },
+      { path: 'candidatoPrefecto' }
+    ]
+  }).lean();
 
   if (!personaEncontrada) {
     return res
