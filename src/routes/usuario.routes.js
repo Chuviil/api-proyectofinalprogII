@@ -14,6 +14,6 @@ router.post("/", crearPersona);
 
 router.get("/:cedula", obtenerPersona);
 
-router.patch("/candidato/:cedula", agregarDignidadCandidato);
+router.patch("/candidato/lista/:cedula", agregarDignidadCandidato);
 
 export default router;
